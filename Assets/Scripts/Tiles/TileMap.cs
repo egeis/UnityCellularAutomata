@@ -22,7 +22,26 @@ public class TileMap : MonoBehaviour
             PlayerPrefs.SetFloat("MapSizeY",mapSize.y);
         }
 
+        for (int i = 0; i < mapSize.x; i++)
+        {
+            for (int j = 0; j < mapSize.y; j++)
+            {
+                GameObject cell = Instantiate(
+                    prefab,
+                    new Vector3(i * tileSize.x, j * tileSize.y, 0),
+                    Quaternion.identity
+                ) as GameObject;
+
+                cell.transform.parent = gameObject.transform;
+
+                cell.name = "cell_" + i + "_" + j;
+            }
+
+        }
+
     }
+
+  
 
 	void Start ()
     {
