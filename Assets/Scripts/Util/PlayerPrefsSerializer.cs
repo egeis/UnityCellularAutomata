@@ -26,7 +26,7 @@ public class PlayerPrefsSerializer
         return (PlayerPrefs.GetString(key) != null);
     }
 
-    public static object Load<T>(string key)
+    /*public static object Load<T>(string key)
     {
         Debug.LogError("Loading...");
 
@@ -38,5 +38,5 @@ public class PlayerPrefsSerializer
         T desObj = (T)bff.Deserialize(ms);
 
         return desObj;
-    }
+    }*/
 }
