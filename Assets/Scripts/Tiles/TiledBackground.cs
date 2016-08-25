@@ -31,7 +31,7 @@ public class TiledBackground : MonoBehaviour
         cPos = Camera.main.transform.position;
     }
 
-    void LateUpdate()
+    void Update()
     {
         var nPos = Camera.main.transform.position;
         speed = nPos - cPos;
