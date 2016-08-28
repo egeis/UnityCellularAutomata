@@ -7,7 +7,8 @@ using System.Collections;
 
 public class Circle : MonoBehaviour
 {
-    public float radius = 1f;
+    private float radius = 1f;
+
     public int segments = 20;
     public bool noise = false;
 
@@ -18,8 +19,12 @@ public class Circle : MonoBehaviour
     float radialFactor;
     float tangencialFactor;
 
+    GlobalSettings _gs;
+
     void Awake()
     {
+        _gs = GlobalSettings.Instance;
+        radius = (_gs.GridSize - 2f) / 2f;
         Rebuild();
     }
 

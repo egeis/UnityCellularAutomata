@@ -3,45 +3,36 @@ using System.Collections;
 
 public class DestroyOffscreen : MonoBehaviour
 {
-    public float offset = 16f;
-
     public delegate void OnDestroy();
     public event OnDestroy DestroyCallback;
 
     private bool offscreen;
-    private float offscreenX = 0f;
+
+    GlobalSettings _gs;
 
     void Awake()
     {
-    }
-
-    // Use this for initialization
-    void Start()
-    {
-        //offscreenX = (Screen.width / PixelPerfectCamera.pixelsToUnits) / 2 + offset;
+        _gs = GlobalSettings.Instance;
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*float posX = transform.position.x;
+        GridVisible grid = _gs.Visible;
+        GridCoordinates gc = gameObject.GetComponent<GridCoordinates>();
 
-        if (Mathf.Abs(posX) > offscreenX)
-        {
-            if (dirX < 0 && posX < -offscreenX)
-                offscreen = true;
-            else if (dirX > 0 && posX > offscreenX)
-                offscreen = true;
-        }
+        if (gc.x < grid.minimumX || gc.x > grid.maximumX)
+            offscreen = true;
+        else if (gc.y < grid.minimumY || gc.y > grid.maximumY)
+            offscreen = true;
         else
-        {
             offscreen = false;
-        }
+
 
         if (offscreen)
         {
             OutOfBounds();
-        }*/
+        }
     }
 
     void OutOfBounds()

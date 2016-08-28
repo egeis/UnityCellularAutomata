@@ -3,45 +3,48 @@ using System.Collections;
 
 public class CameraMovement : MonoBehaviour
 {
-    private float minX = 0;
-    private float minY = 0;
-    private float maxX = 0;
-    private float maxY = 0;
+    public float minX = 0;
+    public float minY = 0;
+    public float maxX = 0;
+    public float maxY = 0;
 
-    private Vector2 size;
+    public float headerOffset = 0f;
+    public float footerOffset = 0f;
 
-    public float headerOffset = 0;
-
-    public GameObject tileMap;
-    public GameObject background;
-
-    public Vector2 targetMin;
-    public Vector2 targetMax;
-
-    public float screenX;
-    public float screenY;
-
-    private float tilesize;
+    GlobalSettings _gs;
 
     void Awake()
     {
-        screenX = Screen.width;
-        screenY = Screen.height;
+        _gs = GlobalSettings.Instance;
+        
+        //Center Camera
+        Camera.main.transform.position = new Vector3((_gs.CellCount.x * _gs.GridSize) / 2f, 
+            (_gs.CellCount.y * _gs.GridSize) / 2f,
+            Camera.main.transform.position.z);        
     }
 
     void Start()
     {
-        Vector2 size = tileMap.GetComponent<TileMap>().mapSize;
-        Vector2 grid = background.GetComponent<TiledBackground>().size;
-        tilesize = (tileMap.GetComponent<TileMap>().prefab.GetComponent<Circle>().radius + 1) * 2;
+        Camera.main.gameObject.GetComponent<CameraGridVisible>().calculateVisibleGrid();
 
-        maxX = ((size.x - Mathf.Ceil(grid.x / 2) + (((size.x % 2f) == 0f) ? 0 : 1 )) * tilesize);
-        maxY = ((size.y - Mathf.Ceil(grid.y / 2) + (((size.y % 2f) == 0f) ? 0 : 1 )) * tilesize) + headerOffset;
+        float tilesize = _gs.GridSize;
 
-        minX = ((Mathf.Ceil(grid.x / 2) -1 ) * tilesize);
-        minY = ((Mathf.Ceil(grid.y / 2) -1 )  * tilesize);
+        int x = _gs.Visible.maximumX - _gs.Visible.minimumX;
+        int y = _gs.Visible.maximumY - _gs.Visible.minimumY;
 
-        Camera.main.transform.position = new Vector3((size.x * tilesize) / 2, (size.y * tilesize) / 2, Camera.main.transform.position.z);
+        Debug.Log(x + " " + y);
+
+        minX = (x * tilesize) / 2f;
+        minY = (y * tilesize) / 2f;
+
+        maxX = (_gs.CellCount.x * tilesize) - minX;
+        maxY = (_gs.CellCount.y * tilesize) - minY;
+
+        minX -= (tilesize * 2);
+        minY -= (tilesize * 2);
+
+        maxX += tilesize;
+        maxY += tilesize;
     }
 
     void Update()
@@ -56,13 +59,5 @@ public class CameraMovement : MonoBehaviour
         pos.z = Camera.main.transform.position.z;
 
         Camera.main.transform.position = (pos);
-
-        targetMin = Camera.main.ScreenToWorldPoint(new Vector3(0,0, Camera.main.nearClipPlane));
-        targetMin.x = Mathf.Round(Mathf.Clamp((targetMin.x / tilesize) - 1f, 0f, size.x));
-        targetMin.y = Mathf.Round(Mathf.Clamp((targetMin.y / tilesize) - 1f, 0f, size.y));
-
-        targetMax = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, Camera.main.nearClipPlane));
-        targetMax.x = Mathf.Round(Mathf.Clamp((targetMax.x / tilesize) + 1f, 0f, size.x));
-        targetMax.y = Mathf.Round(Mathf.Clamp((targetMax.y / tilesize) + 1f, 0f, size.y));
     }
 }

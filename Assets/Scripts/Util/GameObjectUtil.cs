@@ -25,12 +25,27 @@ public class GameObjectUtil
         return instance;
     }
 
+    public static GameObject Instantiate(GameObject prefab, Vector3 pos, int i, int j)
+    {
+        GameObject instance = Instantiate(prefab, pos);
+
+        instance.name = "cell_" + i + "_" + j;
+
+        instance.GetComponent<GridCoordinates>().x = i;
+        instance.GetComponent<GridCoordinates>().y = j;
+
+        return instance;
+    }
+
     public static void Destroy(GameObject gameObject)
     {
         RecycleGameObject recycleGameObject = gameObject.GetComponent<RecycleGameObject>();
+        recycleGameObject.name = "_";
 
         if (recycleGameObject != null)
+        {
             recycleGameObject.Shutdown();
+        }
         else
             GameObject.Destroy(gameObject);
     }

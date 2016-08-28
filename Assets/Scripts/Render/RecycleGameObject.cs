@@ -22,10 +22,6 @@ public class RecycleGameObject : MonoBehaviour
             if (component is IRecycle)
                 recycleComponents.Add(component as IRecycle);
         }
-
-#if UNITY_EDITOR
-        Debug.Log(name + " Found " + recycleComponents.Count + " Components.");
-#endif
     }
 
     public void Restart()
