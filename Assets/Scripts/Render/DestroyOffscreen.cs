@@ -10,11 +10,11 @@ public class DestroyOffscreen : MonoBehaviour
 
     GlobalSettings _gs;
 
-    void Awake()
+    void Start()
     {
         _gs = GlobalSettings.Instance;
     }
-
+ 
     // Update is called once per frame
     void Update()
     {
@@ -27,7 +27,6 @@ public class DestroyOffscreen : MonoBehaviour
             offscreen = true;
         else
             offscreen = false;
-
 
         if (offscreen)
         {

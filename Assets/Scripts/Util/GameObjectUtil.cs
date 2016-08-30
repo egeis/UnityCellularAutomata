@@ -6,7 +6,7 @@ public class GameObjectUtil
 {
     private static Dictionary<RecycleGameObject, ObjectPool> pools = new Dictionary<RecycleGameObject, ObjectPool>();
 
-    public static GameObject Instantiate(GameObject prefab, Vector3 pos)
+    public static GameObject Instantiate(GameObject prefab, Vector3 pos, GameObject root)
     {
         GameObject instance = null;
 
@@ -20,19 +20,11 @@ public class GameObjectUtil
         {
             instance = GameObject.Instantiate(prefab);
             instance.transform.position = pos;
+            instance.transform.parent = root.transform;
+            instance.isStatic = true;
+
+            StaticBatchingUtility.Combine(root);
         }
-
-        return instance;
-    }
-
-    public static GameObject Instantiate(GameObject prefab, Vector3 pos, int i, int j)
-    {
-        GameObject instance = Instantiate(prefab, pos);
-
-        instance.name = "cell_" + i + "_" + j;
-
-        instance.GetComponent<GridCoordinates>().x = i;
-        instance.GetComponent<GridCoordinates>().y = j;
 
         return instance;
     }

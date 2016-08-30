@@ -5,13 +5,9 @@ public class CellManager : MonoBehaviour
 {
     GlobalSettings _gs;
 
-    void Awake()
-    {
-        _gs = GlobalSettings.Instance;
-    }
-
     void Start()
     {
+        _gs = GlobalSettings.Instance;
         DrawVisible();
     }
 
@@ -26,15 +22,20 @@ public class CellManager : MonoBehaviour
         {
             for (int j = _gs.Visible.minimumY; j < _gs.Visible.maximumY; j++)
             {
-                if (GameObject.Find("cell_" + i + "_" + j) != null)
+                GameObject cell = GameObject.Find("cell_" + i + "_" + j);
+
+                if (cell != null)
                     continue;
 
-                GameObject cell = GameObjectUtil.Instantiate(
+                cell = GameObjectUtil.Instantiate(
                     _gs.CellPrefab,
                     new Vector3(i * _gs.GridSize, j * _gs.GridSize, 0),
-                    i,
-                    j
+                    gameObject
                 ) as GameObject;
+
+                cell.name = "cell_" + i + "_" + j;
+                cell.GetComponent<GridCoordinates>().x = i;
+                cell.GetComponent<GridCoordinates>().y = j;
             }
         }
     }

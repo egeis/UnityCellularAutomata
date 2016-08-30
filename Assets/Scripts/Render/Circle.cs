@@ -19,12 +19,11 @@ public class Circle : MonoBehaviour
     float radialFactor;
     float tangencialFactor;
 
-    GlobalSettings _gs;
-
     void Awake()
     {
-        _gs = GlobalSettings.Instance;
+        GlobalSettings _gs = GameObject.FindObjectOfType<GlobalSettings>().GetComponent<GlobalSettings>();  //Long way to access...Instance may still be null..
         radius = (_gs.GridSize - 2f) / 2f;
+
         Rebuild();
     }
 

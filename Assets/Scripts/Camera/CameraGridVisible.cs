@@ -19,16 +19,14 @@ public class GridVisible
 public class CameraGridVisible : MonoBehaviour
 {
     public GridVisible gridV;
-
     GlobalSettings _gs;
 
-    void Awake()
+    void Start()
     {
         gridV = new GridVisible();
-        _gs = GlobalSettings.Instance;
     }
 	
-	void FixedUpdate ()
+	void Update ()
     {
         calculateVisibleGrid();
     }
@@ -36,6 +34,7 @@ public class CameraGridVisible : MonoBehaviour
     public void calculateVisibleGrid()
     {
         Vector2 screen = Camera.main.ScreenToWorldPoint(new Vector3(0, 0, Camera.main.nearClipPlane));
+        if(_gs == null) _gs = GlobalSettings.Instance;
 
         gridV.minimumX = (int) Mathf.Round(Mathf.Clamp((screen.x / _gs.GridSize) - 1f, 0f, _gs.CellCount.x));
         gridV.minimumY = (int) Mathf.Round(Mathf.Clamp((screen.y / _gs.GridSize) - 1f, 0f, _gs.CellCount.y));

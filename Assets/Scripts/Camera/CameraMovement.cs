@@ -13,26 +13,21 @@ public class CameraMovement : MonoBehaviour
 
     GlobalSettings _gs;
 
-    void Awake()
-    {
+    void Start()
+    {        
         _gs = GlobalSettings.Instance;
-        
+
         //Center Camera
         Camera.main.transform.position = new Vector3((_gs.CellCount.x * _gs.GridSize) / 2f, 
             (_gs.CellCount.y * _gs.GridSize) / 2f,
-            Camera.main.transform.position.z);        
-    }
+            Camera.main.transform.position.z); 
 
-    void Start()
-    {
         Camera.main.gameObject.GetComponent<CameraGridVisible>().calculateVisibleGrid();
 
         float tilesize = _gs.GridSize;
 
         int x = _gs.Visible.maximumX - _gs.Visible.minimumX;
         int y = _gs.Visible.maximumY - _gs.Visible.minimumY;
-
-        Debug.Log(x + " " + y);
 
         minX = (x * tilesize) / 2f;
         minY = (y * tilesize) / 2f;

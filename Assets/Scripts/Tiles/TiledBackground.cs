@@ -17,14 +17,10 @@ public class TiledBackground : MonoBehaviour
 
     private GlobalSettings _gs;
 
-    void Awake()
-    {
-        _gs = GlobalSettings.Instance;
-    }
-
     // Use this for initialization
     void Start()
     {
+        _gs = GlobalSettings.Instance;
         textureSize = _gs.GridSize;
 
         size.x = !scaleHorizontially ? 1f : Mathf.Ceil(Screen.width / (textureSize * PixelPerfectCamera.scale));

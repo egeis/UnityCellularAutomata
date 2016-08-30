@@ -13,4 +13,16 @@ public class GridCoordinates : MonoBehaviour, IRecycle
     }
 
     public void Restart() {}
+
+    public int State()
+    {
+        Vector2 cords = new Vector2(x, y);
+        GlobalSettings _gs = GlobalSettings.Instance;
+        int r = -1;
+
+        if (_gs.States.ContainsKey(cords))
+            _gs.States.TryGetValue(cords, out r);
+
+        return r;
+    }
 }
