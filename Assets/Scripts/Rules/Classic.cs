@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityToolbag;
 
 public class Classic
 {
@@ -53,6 +54,66 @@ public class Classic
         cumValueLast = cumValues[cumValues.Length - 1];
     }
 
+    public Future<Dictionary<Vector2, int>> ComputeNextState(Dictionary<Vector2, int> lastState, Vector2 bounds)
+    {
+        Future<Dictionary<Vector2, int>> future = new Future<Dictionary<Vector2, int>>();
+
+        future.Process(() =>
+        {
+            Dictionary<Vector2, int> states = new Dictionary<Vector2, int>();
+
+            foreach (Vector2 key in lastState.Keys)
+            {
+                int value = 0;
+                lastState.TryGetValue(key, out value);
+                int[] count = new int[Enum.GetNames(typeof(States)).Length];
+
+                float[] xs = new float[]
+                {
+                    MathHelper.mod(key.x + 1, bounds.x),
+                    MathHelper.mod(key.x + 1, bounds.x),
+                    key.x,
+                    key.x,
+                    MathHelper.mod(key.x + 1, bounds.x),
+                    MathHelper.mod(key.x - 1, bounds.x),
+                    MathHelper.mod(key.x - 1, bounds.x),
+                    MathHelper.mod(key.x - 1, bounds.x)
+                };
+
+                float[] ys = new float[]
+                {
+                    key.y,
+                    MathHelper.mod(key.y + 1, bounds.y),
+                    MathHelper.mod(key.y + 1, bounds.y),
+                    MathHelper.mod(key.y - 1, bounds.y),
+                    MathHelper.mod(key.y - 1, bounds.y),
+                    key.y,
+                    MathHelper.mod(key.y + 1, bounds.y),
+                    MathHelper.mod(key.y - 1, bounds.y)
+                };
+
+                for (int i = 0; i < 8; i++)
+                {
+                    Vector2 v = new Vector2(xs[i], ys[i]);
+                    int a = (int)States.Dead;
+
+                    bool success = lastState.TryGetValue(v, out a);
+
+                    if (success)
+                        count[a] += 1;
+                }
+
+                foreach (IRule rule in rules)
+                    value = rule.Process(count, value);
+
+                states.Add(key, value);
+            }
+            return states;
+        });
+
+        return future;
+    }
+
     public Color getColorValue(int value)
     {
         return ColorEnum.getColorValue((States)value);
@@ -98,7 +159,7 @@ class Death : IRule
     {
         int next_state = current_state;
 
-        if (current_state == (int)Classic.States.Alive)
+        if (current_state == (int) Classic.States.Alive)
         {
             if (count[(int)Classic.States.Alive] < 2 || count[(int)Classic.States.Alive] > 3)
                 next_state = (int)Classic.States.Dead;

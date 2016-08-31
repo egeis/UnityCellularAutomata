@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+
+using UnityToolbag;
 
 public class GlobalSettings : MonoBehaviour
 {
@@ -13,7 +16,16 @@ public class GlobalSettings : MonoBehaviour
 
     public GameObject CellPrefab;
 
+    [Range(0,100)]
+    public int maxQueuedCount = 10;
+
     public Dictionary<Vector2, int> States = new Dictionary<Vector2, int>();
+    Dictionary<Vector2, int> lastProcessedStates = new Dictionary<Vector2, int>();
+
+    //[HideInInspector]
+    //public int[,] States;
+    //int[,] lastProcessedStates;
+
     public Dictionary<string, GameObject> ActiveObjects = new Dictionary<string, GameObject>();
 
     [HideInInspector]
@@ -29,9 +41,11 @@ public class GlobalSettings : MonoBehaviour
 
     [HideInInspector]
     public float GridSize = 8f;
+
     int current_generation = 0;
     float delay = 0f;
     static GlobalSettings _instance;
+    bool scheduleNextState = true;
 
     public static GlobalSettings Instance
     {
@@ -49,9 +63,19 @@ public class GlobalSettings : MonoBehaviour
     void Awake()
     {
         _instance = this;
+
+        //States = new int[(int)CellCount.x, (int)CellCount.y];
+        //lastProcessedStates = new int[(int)CellCount.x, (int)CellCount.y];
+
         for (int i = 0; i < CellCount.x; i++)
             for (int j = 0; j < CellCount.y; j++)
-                States.Add(new Vector2(i, j), Rules.getRandomCell() );
+            {
+                int s = Rules.getRandomCell();
+                States.Add(new Vector2(i, j), s);
+                lastProcessedStates.Add(new Vector2(i, j), s);
+                //States[i, j] = s;
+                //lastProcessedStates[i, j] = s;
+            }
 
         incrementCurrentGeneration();
     }
@@ -63,7 +87,19 @@ public class GlobalSettings : MonoBehaviour
 
     void Update()
     {
+        if(scheduleNextState && (FutureGenerations.Count < maxQueuedCount) )
+        {
+            Future<Dictionary<Vector2, int>> futureState = new Future<Dictionary<Vector2, int>>();
+            futureState = Rules.ComputeNextState(lastProcessedStates, CellCount);
 
+            futureState.OnSuccess((states) => {
+                FutureGenerations.Enqueue(states.value);
+                lastProcessedStates = states.value;
+                scheduleNextState = true;
+            });
+
+            scheduleNextState = false;
+        }
     }
 
     void LateUpdate()

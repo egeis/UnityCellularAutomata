@@ -17,5 +17,6 @@ public class StatsOverlay : MonoBehaviour {
 	void LateUpdate ()
     {
         generationStat.text = _gs.getCurrentGeneration().ToString("D10");
+        queuedStat.text = string.Format("{0:D3} of {1:D3}",_gs.FutureGenerations.Count,_gs.maxQueuedCount);
 	}
 }
