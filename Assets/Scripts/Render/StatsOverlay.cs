@@ -16,6 +16,6 @@ public class StatsOverlay : MonoBehaviour {
 	
 	void LateUpdate ()
     {
-        generationStat.text = _gs.Generation.ToString("D10");
+        generationStat.text = _gs.getCurrentGeneration().ToString("D10");
 	}
 }

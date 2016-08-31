@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 
 public class GlobalSettings : MonoBehaviour
 {
@@ -27,8 +28,10 @@ public class GlobalSettings : MonoBehaviour
     float delay = 0f;
     static GlobalSettings _instance;
 
-    public static GlobalSettings Instance {
-        get {
+    public static GlobalSettings Instance
+    {
+        get
+        {
             return _instance;
         }
     }
@@ -60,7 +63,7 @@ public class GlobalSettings : MonoBehaviour
     {
         delay += Time.deltaTime;
 
-        if(delay > generationDelay)
+        if (delay > generationDelay)
         {
             if (FutureGenerations.Count > 0)
             {
@@ -86,3 +89,4 @@ public class GlobalSettings : MonoBehaviour
     {
         return Interlocked.Increment(ref current_generation);
     }
+}
