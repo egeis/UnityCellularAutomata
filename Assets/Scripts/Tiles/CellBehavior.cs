@@ -8,16 +8,10 @@ public class CellBehavior : MonoBehaviour, IRecycle
 
     public int State { get { return _state; } }
 
-    int _state = -1;
-    int _nextState = -1;
+    public int _state = -1;
     int _generation = 0;
 
     GlobalSettings _gs;
-
-    public void NextState(int i)
-    {
-        _nextState = i;
-    }
 
     public void Shutdown() 
     {
@@ -54,5 +48,11 @@ public class CellBehavior : MonoBehaviour, IRecycle
 
         if (_gs.States.ContainsKey(cords))
             _gs.States.TryGetValue(cords, out _state);
+
+        if (_state > -1)
+        {
+            Color next = _gs.Rules.getColorValue(_state);
+            GetComponent<SpriteRenderer>().color = next;
+        }
     }
 }

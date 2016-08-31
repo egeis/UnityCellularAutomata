@@ -51,7 +51,7 @@ public class GlobalSettings : MonoBehaviour
         _instance = this;
         for (int i = 0; i < CellCount.x; i++)
             for (int j = 0; j < CellCount.y; j++)
-                States.Add(new Vector2(i, j), (Random.Range(0f, 1f) <= 0.25f) ? 1 : 0);
+                States.Add(new Vector2(i, j), Rules.getRandomCell() );
 
         incrementCurrentGeneration();
     }

@@ -6,8 +6,6 @@ public class CellManager : MonoBehaviour
 {
     GlobalSettings _gs;
 
-    Dictionary<string, GameObject> active = new Dictionary<string, GameObject>();
-
     void Start()
     {
         _gs = GlobalSettings.Instance;
@@ -31,11 +29,6 @@ public class CellManager : MonoBehaviour
 
                 if(_gs.ActiveObjects.ContainsKey("cell_" + i + "_" + j))  
                    continue;
-
-                //GameObject cell = GameObject.Find("cell_" + i + "_" + j);     //WARNING: Too Expensive to use in Update()
-
-                //if (cell != null)
-                //    continue;
 
                 GameObject cell = GameObjectUtil.Instantiate(
                     _gs.CellPrefab,
