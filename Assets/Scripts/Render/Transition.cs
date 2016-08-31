@@ -3,11 +3,9 @@ using System.Collections;
 
 public class Transition : MonoBehaviour, IRecycle
 {
-    public IEnumerator Fade()
+    public IEnumerator Fade(Color next)
     {
         Color current = this.GetComponent<Renderer>().material.color;
-
-        Color next = this.GetComponent<Renderer>().material.color;
 
         var _gs = GameObject.FindObjectOfType<GlobalSettings>().GetComponent<GlobalSettings>();
 
@@ -27,14 +25,14 @@ public class Transition : MonoBehaviour, IRecycle
         }
     }
 
-    public void Toggle()
+    public void Toggle(Color next)
     {
-        StartCoroutine("Fade");
+        StartCoroutine("Fade", next);
     }
 
     public void Restart()
     {
-        Color nc = this.GetComponent<Renderer>().material.color;
+        Color nc = gameObject.GetComponent<Renderer>().material.color;
 
         this.GetComponent<Renderer>().material.color = nc;
     }

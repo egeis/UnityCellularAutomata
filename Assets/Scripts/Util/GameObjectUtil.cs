@@ -6,7 +6,7 @@ public class GameObjectUtil
 {
     private static Dictionary<RecycleGameObject, ObjectPool> pools = new Dictionary<RecycleGameObject, ObjectPool>();
 
-    public static GameObject Instantiate(GameObject prefab, Vector3 pos, GameObject root)
+    public static GameObject Instantiate(GameObject prefab, Vector3 pos, GameObject root, string name)
     {
         GameObject instance = null;
 
@@ -15,25 +15,22 @@ public class GameObjectUtil
         {
             ObjectPool pool = GetObjectPool(recycledScript);
             instance = pool.NextObject(pos).gameObject;
-
-            //StaticBatchingUtility.Combine(pool.gameObject);
         }
         else
         {
             instance = GameObject.Instantiate(prefab);
             instance.transform.position = pos;
             instance.transform.parent = root.transform;
-
-            //StaticBatchingUtility.Combine(root);
+            
         }
 
+        instance.name = name;
         return instance;
     }
 
     public static void Destroy(GameObject gameObject)
     {
         RecycleGameObject recycleGameObject = gameObject.GetComponent<RecycleGameObject>();
-        recycleGameObject.name = "_";
 
         if (recycleGameObject != null)
         {

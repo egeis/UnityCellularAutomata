@@ -8,6 +8,7 @@ public class DestroyOffscreen : MonoBehaviour
 
     private bool offscreen;
 
+    
     GlobalSettings _gs;
 
     void Start()
@@ -15,15 +16,14 @@ public class DestroyOffscreen : MonoBehaviour
         _gs = GlobalSettings.Instance;
     }
  
-    // Update is called once per frame
     void Update()
     {
         GridVisible grid = _gs.Visible;
-        GridCoordinates gc = gameObject.GetComponent<GridCoordinates>();
+        CellBehavior _gc = gameObject.GetComponent<CellBehavior>();
 
-        if (gc.x < grid.minimumX || gc.x > grid.maximumX)
+        if (_gc.x < grid.minimumX || _gc.x > grid.maximumX)
             offscreen = true;
-        else if (gc.y < grid.minimumY || gc.y > grid.maximumY)
+        else if (_gc.y < grid.minimumY || _gc.y > grid.maximumY)
             offscreen = true;
         else
             offscreen = false;
@@ -37,6 +37,9 @@ public class DestroyOffscreen : MonoBehaviour
     void OutOfBounds()
     {
         offscreen = false;
+
+        _gs.ActiveObjects.Remove(gameObject.name);
+
         GameObjectUtil.Destroy(gameObject);
 
         if (DestroyCallback != null)

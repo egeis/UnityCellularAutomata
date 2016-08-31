@@ -8,11 +8,13 @@ public class ObjectPool : MonoBehaviour
 
     private List<RecycleGameObject> poolInstances = new List<RecycleGameObject>();
 
+    public int count = 0;
+
     void Awake()
     {
         gameObject.isStatic = true;
     }
-
+  
     private RecycleGameObject CreateInstance(Vector3 pos)
     {
         RecycleGameObject clone = GameObject.Instantiate(prefab);
@@ -20,7 +22,7 @@ public class ObjectPool : MonoBehaviour
         clone.transform.parent = transform;
 
         poolInstances.Add(clone);
-        
+
         return clone;
     }
 

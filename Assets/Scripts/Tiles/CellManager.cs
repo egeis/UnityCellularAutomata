@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CellManager : MonoBehaviour
 {
     GlobalSettings _gs;
+
+    Dictionary<string, GameObject> active = new Dictionary<string, GameObject>();
 
     void Start()
     {
@@ -26,18 +29,22 @@ public class CellManager : MonoBehaviour
             {
                 _gs._y = j;
 
-                GameObject cell = GameObject.Find("cell_" + i + "_" + j);
+                if(_gs.ActiveObjects.ContainsKey("cell_" + i + "_" + j))  
+                   continue;
 
-                if (cell != null)
-                    continue;
+                //GameObject cell = GameObject.Find("cell_" + i + "_" + j);     //WARNING: Too Expensive to use in Update()
 
-                cell = GameObjectUtil.Instantiate(
+                //if (cell != null)
+                //    continue;
+
+                GameObject cell = GameObjectUtil.Instantiate(
                     _gs.CellPrefab,
                     new Vector3(i * _gs.GridSize, j * _gs.GridSize, 0),
-                    gameObject
+                    gameObject,
+                    "cell_" + i + "_" + j
                 ) as GameObject;
 
-                cell.name = "cell_" + i + "_" + j;
+                _gs.ActiveObjects.Add(cell.name, cell);
             }
         }
     }

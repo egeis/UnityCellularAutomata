@@ -40,6 +40,9 @@ public class CameraMovement : MonoBehaviour
 
         maxX += tilesize;
         maxY += tilesize;
+
+        minY -= footerOffset;
+        maxY += headerOffset;
     }
 
     void Update()

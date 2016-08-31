@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 [RequireComponent(typeof(MeshCollider))]
 [RequireComponent(typeof(MeshFilter))]
 [RequireComponent(typeof(MeshRenderer))]
-
-public class Circle : MonoBehaviour
+public class Circle : MonoBehaviour, IRecycle
 {
     private float radius = 1f;
 
@@ -130,4 +130,10 @@ public class Circle : MonoBehaviour
         //mesh.MarkDynamic();
     }
 
+    public void Restart()
+    {
+        Rebuild();
+    }
+
+    public void Shutdown(){}
 }

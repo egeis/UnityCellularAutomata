@@ -6,7 +6,7 @@ using System.Threading;
 public class GlobalSettings : MonoBehaviour
 {
     public float transitionDuration = 1f;
-    public float GridSize = 32f;
+    
     public float generationDelay = 2f;
 
     public Vector2 CellCount = new Vector2(100, 100);
@@ -14,6 +14,7 @@ public class GlobalSettings : MonoBehaviour
     public GameObject CellPrefab;
 
     public Dictionary<Vector2, int> States = new Dictionary<Vector2, int>();
+    public Dictionary<string, GameObject> ActiveObjects = new Dictionary<string, GameObject>();
 
     [HideInInspector]
     public Queue<Dictionary<Vector2, int>> FutureGenerations = new Queue<Dictionary<Vector2, int>>();
@@ -24,6 +25,10 @@ public class GlobalSettings : MonoBehaviour
     [HideInInspector]
     public int _y = 0;
 
+    public Classic Rules = new Classic();
+
+    [HideInInspector]
+    public float GridSize = 8f;
     int current_generation = 0;
     float delay = 0f;
     static GlobalSettings _instance;
@@ -47,6 +52,8 @@ public class GlobalSettings : MonoBehaviour
         for (int i = 0; i < CellCount.x; i++)
             for (int j = 0; j < CellCount.y; j++)
                 States.Add(new Vector2(i, j), (Random.Range(0f, 1f) <= 0.25f) ? 1 : 0);
+
+        incrementCurrentGeneration();
     }
 
     void Start()
