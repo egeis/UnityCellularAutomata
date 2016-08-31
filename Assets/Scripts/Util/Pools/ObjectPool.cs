@@ -20,7 +20,7 @@ public class ObjectPool : MonoBehaviour
         clone.transform.parent = transform;
 
         poolInstances.Add(clone);
-
+        
         return clone;
     }
 

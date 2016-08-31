@@ -15,15 +15,16 @@ public class GameObjectUtil
         {
             ObjectPool pool = GetObjectPool(recycledScript);
             instance = pool.NextObject(pos).gameObject;
+
+            //StaticBatchingUtility.Combine(pool.gameObject);
         }
         else
         {
             instance = GameObject.Instantiate(prefab);
             instance.transform.position = pos;
             instance.transform.parent = root.transform;
-            instance.isStatic = true;
 
-            StaticBatchingUtility.Combine(root);
+            //StaticBatchingUtility.Combine(root);
         }
 
         return instance;

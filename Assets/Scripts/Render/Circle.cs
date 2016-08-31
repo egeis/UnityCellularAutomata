@@ -127,6 +127,7 @@ public class Circle : MonoBehaviour
         mesh.RecalculateNormals();
         mesh.RecalculateBounds();
         mesh.Optimize();
+        //mesh.MarkDynamic();
     }
 
 }

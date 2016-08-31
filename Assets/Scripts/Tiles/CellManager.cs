@@ -20,8 +20,12 @@ public class CellManager : MonoBehaviour
     {
         for (int i = _gs.Visible.minimumX; i < _gs.Visible.maximumX; i++)
         {
+            _gs._x = i;
+
             for (int j = _gs.Visible.minimumY; j < _gs.Visible.maximumY; j++)
             {
+                _gs._y = j;
+
                 GameObject cell = GameObject.Find("cell_" + i + "_" + j);
 
                 if (cell != null)
@@ -34,8 +38,6 @@ public class CellManager : MonoBehaviour
                 ) as GameObject;
 
                 cell.name = "cell_" + i + "_" + j;
-                cell.GetComponent<GridCoordinates>().x = i;
-                cell.GetComponent<GridCoordinates>().y = j;
             }
         }
     }
