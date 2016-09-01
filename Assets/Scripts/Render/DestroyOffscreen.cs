@@ -8,17 +8,9 @@ public class DestroyOffscreen : MonoBehaviour
 
     private bool offscreen;
 
-    
-    GlobalSettings _gs;
-
-    void Start()
-    {
-        _gs = GlobalSettings.Instance;
-    }
- 
     void Update()
     {
-        GridVisible grid = _gs.Visible;
+        GridVisible grid =  GlobalSettings.Instance.Visible;
         CellBehavior _gc = gameObject.GetComponent<CellBehavior>();
 
         if (_gc.x < grid.minimumX || _gc.x > grid.maximumX)
@@ -38,7 +30,7 @@ public class DestroyOffscreen : MonoBehaviour
     {
         offscreen = false;
 
-        _gs.ActiveObjects.Remove(gameObject.name);
+        GlobalSettings.Instance.ActiveObjects.Remove(gameObject.name);
 
         GameObjectUtil.Destroy(gameObject);
 

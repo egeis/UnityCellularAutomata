@@ -26,11 +26,12 @@ public class CellManager : MonoBehaviour
             for (int j = _gs.Visible.minimumY; j < _gs.Visible.maximumY; j++)
             {
                 _gs._y = j;
+                GameObject cell;
 
-                if(_gs.ActiveObjects.ContainsKey("cell_" + i + "_" + j))  
+                if (_gs.ActiveObjects.TryGetValue("cell_" + i + "_" + j, out cell))  
                    continue;
 
-                GameObject cell = GameObjectUtil.Instantiate(
+                cell = GameObjectUtil.Instantiate(
                     _gs.CellPrefab,
                     new Vector3(i * _gs.GridSize, j * _gs.GridSize, 0),
                     gameObject,

@@ -27,15 +27,14 @@ public class CellBehavior : MonoBehaviour, IRecycle
     {
         int nextState = _state;
 
-        //if (_gs == null)
-        //    _gs = GlobalSettings.Instance;
-
-        _gs.States.TryGetValue(new Vector2(x, y), out nextState);
-
-        if (nextState != _state && nextState > -1)
+        if (_gs.States.TryGetValue(new Vector2(x, y), out nextState))
         {
-            Color next = _gs.Rules.getColorValue(nextState);
-            transition.SetColor(next);
+            if (nextState != _state && nextState > -1)
+            {
+                Color next = _gs.Rules.getColorValue(nextState);
+                transition.Toggle(next);
+                _state = nextState;
+            }
         }
     }
 
@@ -50,8 +49,7 @@ public class CellBehavior : MonoBehaviour, IRecycle
         Vector2 cords = new Vector2(x, y);
         _state = -1;
 
-        if (_gs.States.ContainsKey(cords))
-            _gs.States.TryGetValue(cords, out _state);
+        _gs.States.TryGetValue(cords, out _state);
 
         if (_state > -1)
         {

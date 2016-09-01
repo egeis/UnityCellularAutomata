@@ -8,13 +8,13 @@ public class Classic
 {
     public enum States
     {
-        [FloatValue(0.35f)]
-        [ColorValue(0.8f, 0.8f, 0.8f, 1.0f)]
-        Alive,
-
         [FloatValue(0.65f)]
         [ColorValue(0.2f, 0.2f, 0.2f, 1.0f)]
-        Dead
+        Dead = 0,
+
+        [FloatValue(0.35f)]
+        [ColorValue(0.8f, 0.8f, 0.8f, 1.0f)]
+        Alive = 1
     }
 
     //Weighted Values
@@ -22,14 +22,8 @@ public class Classic
     float[] cumValues;
     float cumValueLast;
 
-    //Futures
-    protected List<IRule> rules = new List<IRule>();
-
     public Classic() 
     {
-        rules.Add(new Birth());
-        rules.Add(new Death());
-
         WeightedStates lws = null;
 
         int index = 0;
@@ -38,8 +32,8 @@ public class Classic
         foreach (States val in Enum.GetValues(typeof(States)))
         {
             WeightedStates ws = new WeightedStates();
-            ws.Id = (int)val;
-            ws.Weight = getFloatValue((int)val);
+            ws.Id = (int) val;
+            ws.Weight = getFloatValue((int) val);
 
             if (lws == null)
                 ws.Cumulative = ws.Weight;
@@ -95,7 +89,7 @@ public class Classic
                 for (int i = 0; i < 8; i++)
                 {
                     Vector2 v = new Vector2(xs[i], ys[i]);
-                    int a = (int)States.Dead;
+                    int a = (int) States.Dead;
 
                     bool success = lastState.TryGetValue(v, out a);
 
@@ -103,8 +97,10 @@ public class Classic
                         count[a] += 1;
                 }
 
-                foreach (IRule rule in rules)
-                    value = rule.Process(count, value);
+                if (value == (int)States.Alive)
+                    value = Death.Process(count, value);
+                else
+                    value = Birth.Process(count, value);
 
                 states.Add(key, value);
             }
@@ -137,9 +133,9 @@ public class Classic
     }
 }
 
-class Birth : IRule
+static class Birth
 {
-    public int Process(int[] count, int current_state)
+    public static int Process(int[] count, int current_state)
     {
         int next_state = current_state;
 
@@ -153,9 +149,9 @@ class Birth : IRule
     }
 }
 
-class Death : IRule
+static class Death
 {
-    public int Process(int[] count, int current_state)
+    public static int Process(int[] count, int current_state)
     {
         int next_state = current_state;
 
@@ -175,6 +171,4 @@ class WeightedStates
     public float Weight { get; set; }
     public float Cumulative { get; set; }
 }
-
-public interface IRule { int Process(int[] count, int current_state); }
 

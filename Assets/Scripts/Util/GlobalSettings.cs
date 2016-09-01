@@ -22,10 +22,6 @@ public class GlobalSettings : MonoBehaviour
     public Dictionary<Vector2, int> States = new Dictionary<Vector2, int>();
     Dictionary<Vector2, int> lastProcessedStates = new Dictionary<Vector2, int>();
 
-    //[HideInInspector]
-    //public int[,] States;
-    //int[,] lastProcessedStates;
-
     public Dictionary<string, GameObject> ActiveObjects = new Dictionary<string, GameObject>();
 
     [HideInInspector]
@@ -37,7 +33,7 @@ public class GlobalSettings : MonoBehaviour
     [HideInInspector]
     public int _y = 0;
 
-    public Classic Rules = new Classic();
+    public Classic Rules;
 
     [HideInInspector]
     public float GridSize = 8f;
@@ -63,6 +59,7 @@ public class GlobalSettings : MonoBehaviour
     void Awake()
     {
         _instance = this;
+        Rules = new Classic();
 
         //States = new int[(int)CellCount.x, (int)CellCount.y];
         //lastProcessedStates = new int[(int)CellCount.x, (int)CellCount.y];
@@ -78,11 +75,6 @@ public class GlobalSettings : MonoBehaviour
             }
 
         incrementCurrentGeneration();
-    }
-
-    void Start()
-    {
-
     }
 
     void Update()

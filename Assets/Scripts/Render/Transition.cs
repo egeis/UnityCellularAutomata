@@ -11,18 +11,18 @@ public class Transition : MonoBehaviour, IRecycle
 
         if (current.Equals(next)) yield break;
 
-        for (float t = 0f; t < 1.0f; t += Time.deltaTime / 2f)
+        for (float t = 0f; t < 1.0f; t += Time.deltaTime / GlobalSettings.Instance.transitionDuration)
         {
-            /*Color nc = new Color(
+            Color nc = new Color(
                 MathHelper.LerpUnclamped(current.r, next.r, t),
                 MathHelper.LerpUnclamped(current.g, next.g, t),
                 MathHelper.LerpUnclamped(current.b, next.b, t),
                 MathHelper.LerpUnclamped(current.a, next.a, t)
-            );*/
+            );
 
-            spriteRenderer.color = Color.Lerp(current, next, t);
+            //spriteRenderer.color = Color.Lerp(current, next, t);
 
-            //renderer.color = nc;
+            spriteRenderer.color = nc;
             yield return null;
         }
     }
@@ -49,6 +49,6 @@ public class Transition : MonoBehaviour, IRecycle
 
     public void Shutdown()
     {
-        StopCoroutine("Transition");
+        StopCoroutine("Fade");
     }
 }
