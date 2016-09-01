@@ -79,7 +79,10 @@ public class GlobalSettings : MonoBehaviour
 
     void Update()
     {
-        if(scheduleNextState && (FutureGenerations.Count < maxQueuedCount) )
+        if (Input.GetKey("escape"))
+            Application.Quit();
+
+        if (scheduleNextState && (FutureGenerations.Count < maxQueuedCount) )
         {
             Future<Dictionary<Vector2, int>> futureState = new Future<Dictionary<Vector2, int>>();
             futureState = Rules.ComputeNextState(lastProcessedStates, CellCount);
