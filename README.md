@@ -10,3 +10,5 @@ Conway’s Game of life is a Discrete model of 2 dimensional Cellular Automation
 This project is the development the two dimensional variation using the standard ruleset. 
 
 Built using Unity (verion) 5.3.6f1
+
+This version is based on my previous implementation <a href="https://github.com/egeis/GameOfLife">GameOfLife</a> using Unity 4, I choose to fork and start an new version since everything except for the rules was being rebuilt.
